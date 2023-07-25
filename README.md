@@ -1,4 +1,4 @@
-# compiler-project
+# Compiler Project
 Designing a compiler that can parse standard java code into executable arm assembly language that achieves the exact performance of the java code.
 
 The main tool used is the abstract syntax tree, the lex parser, and plenty of data structures created by myself. The whole project can be seen as two main parts. Part 1 is figuring out how to typecheck all the syntax and semantic errors in the java file. I had to compare and contrast with the official java virtual machine and java grammar rules to make sure my typechecker is acting the same way and detecting the same errors (not less and not excessive).
