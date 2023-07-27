@@ -6,3 +6,6 @@ The main tool used is the abstract syntax tree, the lex parser, and plenty of da
 Part 2 is translating the file into arm assembly language so that the computer can then run my assembly executable to get the same results as running the compiled java file. This part required a lot of background knowledge in arm assembly, handling loops, all sorts of array storing and accessing circumstances, different boolean circuits.
 
 See a more in-depth summary of each part of the code in respective folders.
+
+# How to run the compiler
+Running the makefile will generate a corresponding executable (name depends on which part you're currently in). Running the executable with ./executable_name java_file_name.c will then do the corresponding task. In part 1 and part 2, the java file will be typechecked for syntax and semantic errors. In the rest parts, the java file will be parsed and the arm assembly code will be generated. I usually use raspberry pi to run the assembly code, then compare it with the the correct output (output generated using normal way of compiling java file).
