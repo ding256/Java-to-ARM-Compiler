@@ -1,0 +1,28 @@
+------------------Abstract------------------
+The project is structured mainly using struct. Each method declaration, except for main method, is stored globally because we don't define any methods when we go into the inner name scopes, so we don't really need to create a separate method table for all name scopes.
+
+------------------Global variables------------------
+There are 5 struct global variables, which are used to save the methods, commands, local vars, intermediate values.
+
+------------------General structure of project------------------
+Each command is saved using a struct called cmd_node. This is like a node that contains its tree, all children trees, number of variable definitions, and the name of the current method we are in. Note that we might be in the inner inner inner scope of a method, but we still need this name of current method in order to check the return values. All variables (a field of the TableTree) are saved using another struct called compiler_temp. This struct contains 2 fields, which are register number, and offset. All methods are saved in separate struct because they need to store additional information (egg. argument parameters). The method struct is called MethodTable and contains the name of method, all previously defined structs for the whole project, array of pointers to cmd_node (for statement command lines), and number of parameters. I've used the struct called cmd_node as the main return types of majority of functions. It contains a 7 fields.
+
+------------------Helper functions------------------
+bool if_epsilon(struct ASTNode *);
+
+cmd_node *create_command_node(char *cmd_name, enum DataType type);
+cmd_node *create_command_node_one_param(char *cmd_name, int param1, enum DataType type);
+cmd_node *create_command_node_two_param(char *cmd_name, int param1, int param2, enum DataType type);
+cmd_node *create_command_node_three_param();
+
+void add_cmd_to_table(cmd_node *node);
+void add_local_var(char* id);
+void add_compiler_temp(int id);
+void add_compiler_temp2(int id, int offset);
+void add_static_int(char *name, int value);
+void add_string(char *name, char *content);
+
+int find_offset(char* id);
+int find_int_lit_offset(int id);
+bool find_static_int(char *id);
+bool find_string(char *id);
