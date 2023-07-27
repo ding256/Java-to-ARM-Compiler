@@ -1,0 +1,34 @@
+------------------Abstract------------------
+The project is structured mainly using struct. Each method declaration, except for main method, is stored globally because we don't define any methods when we go into the inner name scopes, so we don't really need to create a separate method table for all name scopes.
+
+------------------Global variables------------------
+There are 2 struct global variables, which are used to save the methods, and also forward reference methods (explained later). They come with 2 int used to save the number of entries within each, so that we can process them. The global boolean is used to tell the program whether if we have finished all forward references (when we get into the main method).
+
+------------------General structure of project------------------
+Each name scope (or level) is saved using a struct called TableTree. This is like a tree node that contains its parent (outer scope), all current scope variable definitions (array of pointers to struct SymbolTableEntry), number of variable definitions, and the name of the current method we are in. Note that we might be in the inner inner inner scope of a method, but we still need this name of current method in order to check the return values. All variables (a field of the TableTree) are saved using another struct called SymbolTableEntry. This struct contains 3 fields, which are name of variable, type, and dimension. All methods are saved in separate struct because they need to store additional information (egg. argument parameters). The method struct is called MethodTable and contains the name of method, a struct called expression that has 2 fields (type and dimension), array of pointers to SymbolTableEntry (for parameters), and number of parameters. I've used the struct called expression as the main return types of majority of functions. It contains a type and a dimension.
+
+------------------Helper functions------------------
+create_tree_node(): create a name scope and link it to a parent name scope
+add(): create a variable and add it into the list of variables defined in current scope
+add_to_method_table(): create a method node and add it into the global method table
+add_parameter(): add a parameter into the field of a method node
+add_to_forward_table(): create a method node and add it into the temporary forward checking method table
+
+find_symbol(): find a variable in available scopes (all scopes that are accessible from current position) if exist
+find_method(): find a method if exist
+find_parameter(): find a parameter in a method if exist
+find_forward_method(): find a forward reference of method if exist
+
+change_type(): change the type of a variable
+change_method_type(): change the type of a method
+change_parameter_type(): change the type of a parameter
+change_forward_method_type(): change the type of a forward reference method
+
+check_parameter(): check if method call parameter matches method declaration
+if_epsilon(): check if a node is epsilon (epsilon nodes are also created, but with a node type of NODETYPE_EPSILON)
+type_check(): check if two types are valid, given a target type and a lever. The lever is used to control "like a lever". If the lever is given as 0, then we check if the two types match the given target type. If the lever is given as 1 then we check if the two types not match the given target type (they can match types except for the target type)
+type_check_new(): check if the current exp is a declaration instead of an expression
+if_undefined_param(): check if any parameters in a method declaration is undefined, if then report
+
+------------------Type checking------------------
+I built a AST tree for type checking, starting from the skeleton code. The AST tree is designed to resolve parsing conflict, and I added a new field called lineno to record the line number using yylineno for each node. In general, the AST tree is only traversed once to typecheck. However, I first traverse the method declarations to ensure the functionality of forward reference. To typecheck, I created some new data types. The data type EPSILON is used as a return type for epsilon nodes. 3 new data types are defined (NEW_INT, NEW_STR, NEW_BOOLEAN) to distinguish from other expressions such as int literal, because if exp returns from new PrimeType Index, but we are not trying to declare something, then a type violation should be reported. Also, new PrimeType Index is not something comparable to other prime data types. Mostly when checking type violation, we check type and dimension. However, dimension might change because if we access only 1 square bracket of a 2 dimensional array, then the result should be 1 dimensional. If we access a 1 dimensional array using 1 square bracket, then it should be an int/String/bool. Further detail of type checking is already discussed in each helper functions.
