@@ -1,4 +1,4 @@
-# Compiler Project
+# Java to ARM Compiler
 Designed and built a robust compiler from the ground up, capable of parsing standard Java code into executable ARM assembly file, ensuring type-check and error detection aligned with Java conventions.
 
 Employed customized, high-level data structures, including symbol table, abstract syntax tree, and production rules table to efficiently facilitate the compiler and subsequent compilation into executable binaries, which act exactly as a JVM compiler.
